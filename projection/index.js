@@ -6,11 +6,19 @@ const url = process.env.DB_URL;
 const client = new MongoClient(url);
 async function main() {
     await client.connect();
-    const db=client.db('collectionPractice')
-    const collection=db.collection('users')
+    const db = client.db('collectionPractice')
+    const collection = db.collection('users')
     const data = collection.find({city:"Jaipur"},{projection:{name:1,isActive:1, _id:0}})
     console.log(await data.toArray())
-}          
+
+
+    // in operator
+    await collection.updateMany({ name: { $in: ["User1", 'User2', 'User3'] } }, { $set: { name: "Kirti" } })
+
+    //ordered insert
+    collection.insertMany([{name:"kk"},{name:"dd"}],{ordered:false}) 
+
+}
 
 main()
 
